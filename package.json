@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "start": "npm run build && node dist/src/index.js",
+        "start": "npm run build && node -r tsconfig-paths/register dist/src/index.js",
         "build": "tsc",
         "format": "npx prettier . --write",
         "test": "echo \"Error: no test specified\" && exit 1"

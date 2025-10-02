@@ -15,12 +15,13 @@ app.use(
         credentials: true,
     }),
 );
+app.use(express.json());
 
 async function loadControllers() {
     const controllers = fs.readdirSync('./src/controllers');
     console.log('\n\tLoading Controllers');
     for (const controller of controllers) {
-        const route = controller.replace('Controller.ts', '').toLocaleLowerCase();
+        const route = controller.replace('.controller.ts', '').toLocaleLowerCase();
         await import(`./controllers/${controller.replace('.ts', '.js')}`)
             .then((controller) => {
                 app.use(`/${route}`, controller.default);
