@@ -1,25 +1,25 @@
 import axios from 'axios';
-// import productsData from '../data/products.json';
-import productsData from '../data/mock-products.json';
+import productsData from '../data/products.json';
+// import productsData from '../data/mock-products.json';
 import { Product } from '../types/product.interface';
 import { ReadAllProductsResponse } from '../types/response/read-all-products.responses';
 import { ProductFilterStrategyComposite } from '../strategies/product-filter/product-filter.strategy.composite';
 import { ReadAllProductsByFilterDto } from '../types/dto/read-all-products-by-filter.dto';
 
 async function readAll(): Promise<ReadAllProductsResponse> {
-    // const products = await getProductsAsync();
-    const products = constructStarValues(productsData);
-    return { isSuccess: true, message: 'All products read!', products };
+    const products = await getProductsAsync();
+    const productsWithStarValues = constructStarValues(products);
+    return { isSuccess: true, message: 'All products read!', products: productsWithStarValues };
 }
 
 async function readAllByFilter(
     readAllProductsByFilterDto: ReadAllProductsByFilterDto
 ): Promise<ReadAllProductsResponse> {
-    // const products = await getProductsAsync();
-    const products = constructStarValues(productsData);
+    const products = await getProductsAsync();
+    const productsWithStarValues = constructStarValues(products);
     const productFilterStrategyComposite = new ProductFilterStrategyComposite();
     const filteredProducts = productFilterStrategyComposite.filter(
-        products,
+        productsWithStarValues,
         readAllProductsByFilterDto
     );
 
