@@ -10,15 +10,24 @@ async function readAll(): Promise<ReadAllProductsResponse> {
     // const products = await getProductsAsync();
     const products = constructStarValues(productsData);
     return { isSuccess: true, message: 'All products read!', products };
-};
+}
 
-async function readAllByFilter(readAllProductsByFilterDto: ReadAllProductsByFilterDto): Promise<ReadAllProductsResponse> {
+async function readAllByFilter(
+    readAllProductsByFilterDto: ReadAllProductsByFilterDto
+): Promise<ReadAllProductsResponse> {
     // const products = await getProductsAsync();
     const products = constructStarValues(productsData);
     const productFilterStrategyComposite = new ProductFilterStrategyComposite();
-    const filteredProducts = productFilterStrategyComposite.filter(products, readAllProductsByFilterDto);
+    const filteredProducts = productFilterStrategyComposite.filter(
+        products,
+        readAllProductsByFilterDto
+    );
 
-    return { isSuccess: true, message: 'all products read by given filters', products: filteredProducts };
+    return {
+        isSuccess: true,
+        message: 'all products read by given filters',
+        products: filteredProducts,
+    };
 }
 
 function constructStarValues(products: Product[]): Product[] {
@@ -44,10 +53,12 @@ function constructStarValues(products: Product[]): Product[] {
 async function getProductsAsync(): Promise<Product[]> {
     const goldPricePerGramUSD = await getGoldPricePerGramUSDAsync();
     productsData.forEach((product: Product) => {
-        product.price = Number(((product.popularityScore + 1) * product.weight * goldPricePerGramUSD).toFixed(2));
+        product.price = Number(
+            ((product.popularityScore + 1) * product.weight * goldPricePerGramUSD).toFixed(2)
+        );
     });
     return productsData;
-};
+}
 
 async function getGoldPricePerGramUSDAsync(): Promise<number> {
     const response = await axios.get('https://www.goldapi.io/api/XAU/USD', {
@@ -57,7 +68,7 @@ async function getGoldPricePerGramUSDAsync(): Promise<number> {
         },
     });
     return response.data.price_gram_24k;
-};
+}
 
 export default {
     readAll,
