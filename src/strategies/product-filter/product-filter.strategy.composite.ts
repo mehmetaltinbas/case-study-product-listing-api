@@ -14,9 +14,15 @@ export class ProductFilterStrategyComposite implements ProductFilterStrategy {
     }
 
     filter(products: Product[], readAllProductsByFilterDto: ReadAllProductsByFilterDto): Product[] {
+        // console.log("\n\n");
+        // console.log(products);
         if (readAllProductsByFilterDto) {
             products = this.priceProductFilterStrategy.filter(products, readAllProductsByFilterDto);
+            // console.log(products);
+            // console.log("\n\n");
             products = this.popularityScoreProductFilterStrategy.filter(products, readAllProductsByFilterDto);
+            // console.log(products);
+            // console.log("\n\n");
         }
         return products;
     }

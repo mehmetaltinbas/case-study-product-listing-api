@@ -8,14 +8,37 @@ import { ReadAllProductsByFilterDto } from '../types/dto/read-all-products-by-fi
 
 async function readAll(): Promise<ReadAllProductsResponse> {
     // const products = await getProductsAsync();
-    return { isSuccess: true, message: 'All products read!', products: productsData };
+    const products = constructStarValues(productsData);
+    return { isSuccess: true, message: 'All products read!', products };
 };
 
 async function readAllByFilter(readAllProductsByFilterDto: ReadAllProductsByFilterDto): Promise<ReadAllProductsResponse> {
     // const products = await getProductsAsync();
+    const products = constructStarValues(productsData);
     const productFilterStrategyComposite = new ProductFilterStrategyComposite();
-    const filteredProducts = productFilterStrategyComposite.filter(productsData ,readAllProductsByFilterDto);
+    const filteredProducts = productFilterStrategyComposite.filter(products, readAllProductsByFilterDto);
+
     return { isSuccess: true, message: 'all products read by given filters', products: filteredProducts };
+}
+
+function constructStarValues(products: Product[]): Product[] {
+    for (const product of products) {
+        product.starValues = [];
+        const score = product.popularityScore * 5;
+        const floorOfScore = Math.floor(score);
+        const remainder = score - floorOfScore;
+        for (let i = 1; i <= floorOfScore; i++) {
+            product.starValues.push(1);
+        }
+        product.starValues.push(remainder);
+        const remaining = 5 - product.starValues.length;
+        if (remaining >= 1) {
+            for (let i = 1; i <= remaining; i++) {
+                product.starValues.push(0);
+            }
+        }
+    }
+    return products;
 }
 
 async function getProductsAsync(): Promise<Product[]> {

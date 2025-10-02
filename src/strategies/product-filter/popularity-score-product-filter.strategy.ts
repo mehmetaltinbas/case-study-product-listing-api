@@ -9,14 +9,16 @@ export class PopularityScoreProductFilterStrategy implements ProductFilterStrate
         if (!readAllProductsByFilterDto.popularityScore || (!readAllProductsByFilterDto.popularityScore.min && !readAllProductsByFilterDto.popularityScore.max)) { return products; }
         const filteredByMin = products.filter(product => {
             if (readAllProductsByFilterDto.popularityScore?.min !== undefined && readAllProductsByFilterDto.popularityScore?.min !== null && !isNaN(readAllProductsByFilterDto.popularityScore?.min)) {
-                if (product.popularityScore! >= readAllProductsByFilterDto.popularityScore.min) { return true; }
+                // console.log(`productPopularityScore: ${Number((product.popularityScore * 5).toFixed(1))}     dtoPopularitySocreMin: ${readAllProductsByFilterDto.popularityScore.min}`);
+                if (Number((product.popularityScore * 5).toFixed(1)) >= readAllProductsByFilterDto.popularityScore.min) { return true; }
                 else { return false; }                    
             }
             return true;
         });
         const filteredByMax = filteredByMin.filter(product => {
             if (readAllProductsByFilterDto.popularityScore?.max !== undefined && readAllProductsByFilterDto.popularityScore?.max !== null && !isNaN(readAllProductsByFilterDto.popularityScore?.max)) {
-                if (product.popularityScore! <= readAllProductsByFilterDto.popularityScore.max) { return true; }
+                // console.log(`productPopularityScore: ${Number((product.popularityScore * 5).toFixed(1))}     dtoPopularitySocreMin: ${readAllProductsByFilterDto.popularityScore.max}`);
+                if (Number((product.popularityScore * 5).toFixed(1)) <= readAllProductsByFilterDto.popularityScore.max) { return true; }
                 else { return false; }
             }
             return true;

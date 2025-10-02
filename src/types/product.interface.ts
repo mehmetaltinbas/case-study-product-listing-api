@@ -9,4 +9,5 @@ export interface Product {
         white: string;
     };
     price?: number;
+    starValues?: number[];
 }
