@@ -1,8 +1,9 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import fs from 'fs';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
+import fs from 'fs';
 // import './keepalive.js';
+import path from 'path';
 
 dotenv.config();
 
@@ -18,17 +19,24 @@ app.use(
 app.use(express.json());
 
 async function loadControllers() {
-    const controllers = fs.readdirSync('./src/controllers');
+    const controllersDir = path.join(__dirname, 'controllers');
+    const controllers = fs.readdirSync(controllersDir);
+
     console.log('\n\tLoading Controllers');
-    for (const controller of controllers) {
-        const route = controller.replace('.controller.ts', '').toLocaleLowerCase();
-        await import(`./controllers/${controller.replace('.ts', '.js')}`)
+    for (const file of controllers) {
+        if (!file.match(/\.controller\.(js|ts)$/)) {
+            continue;
+        };
+
+        const route = file.replace(/\.controller\.(ts|js)$/, '').toLocaleLowerCase();
+
+        await import(`./controllers/${file.replace('.ts', '.js')}`)
             .then((controller) => {
                 app.use(`/${route}`, controller.default);
                 console.log(`loaded controller: ${route}`);
             })
             .catch((err) =>
-                console.error(`\n\tError loading the controller ${controller}\n`, err)
+                console.error(`\n\tError loading the controller ${file}\n`, err)
             );
     }
     console.log('');

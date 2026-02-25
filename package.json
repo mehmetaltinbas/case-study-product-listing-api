@@ -6,7 +6,9 @@
         "start": "npm run build && node dist/src/index.js",
         "build": "tsc",
         "format": "npx prettier . --write",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "docker:build": "docker build -t altnbsmehmet/case-study-product-listing-api .",
+        "docker:push": "docker push altnbsmehmet/case-study-product-listing-api",
+        "docker:deploy": "npm run docker:build && npm run docker:push"
     },
     "author": "Mehmet Altınbaş",
     "license": "ISC",
