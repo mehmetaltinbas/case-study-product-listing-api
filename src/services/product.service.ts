@@ -1,10 +1,10 @@
 import axios from 'axios';
 import productsData from '../data/products.json';
 // import productsData from '../data/mock-products.json';
-import { Product } from '../types/product.interface';
-import { ReadAllProductsResponse } from '../types/response/read-all-products.responses';
 import { ProductFilterStrategyComposite } from '../strategies/product-filter/product-filter.strategy.composite';
 import { ReadAllProductsByFilterDto } from '../types/dto/read-all-products-by-filter.dto';
+import { Product } from '../types/product.interface';
+import { ReadAllProductsResponse } from '../types/response/read-all-products.responses';
 
 async function readAll(): Promise<ReadAllProductsResponse> {
     const products = await getProductsAsync();
